@@ -18,6 +18,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Extract project ZIP
+        run: |
+          unzip -q DenzzCell_GitHub_APK_Source_58mm.zip -d source
+          ls source/DenzzCell_GitHub
+
       - name: Set up Java 17
         uses: actions/setup-java@v4
         with:
@@ -30,13 +35,12 @@ jobs:
           gradle-version: '8.7'
 
       - name: Build debug APK
-        run: gradle assembleDebug
+        run: gradle -p source/DenzzCell_GitHub assembleDebug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: DenzzCell-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: source/DenzzCell_GitHub/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
-          
